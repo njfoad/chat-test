@@ -3,6 +3,7 @@ import { AvayaChatWidget, ChatBridge, useChat } from 'chat-engine';
 
 export default function App() {
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isBubbleVisible, setIsBubbleVisible] = useState(true);
   
   // Reference to hook into the internal chat engine (optional, but good for boilerplate)
   const chatRef = useRef<ReturnType<typeof useChat> | null>(null);
@@ -48,23 +49,35 @@ export default function App() {
             The Avaya Omni Chat Engine is loaded and ready. 
             Click the bubble in the bottom right to start chatting.
           </p>
-          <button 
-            onClick={() => setIsChatOpen(true)} 
-            style={{ 
-              backgroundColor: '#0033A0', color: 'white', border: 'none', 
-              padding: '10px 20px', borderRadius: '6px', fontWeight: 'bold', 
-              cursor: 'pointer' 
-            }}
-          >
-            Open Chat Programmatically
-          </button>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '12px' }}>
+            <button 
+              onClick={() => setIsChatOpen(true)} 
+              style={{ 
+                backgroundColor: '#0033A0', color: 'white', border: 'none', 
+                padding: '10px 20px', borderRadius: '6px', fontWeight: 'bold', 
+                cursor: 'pointer' 
+              }}
+            >
+              Open Chat Programmatically
+            </button>
+            <button 
+              onClick={() => setIsBubbleVisible(!isBubbleVisible)} 
+              style={{ 
+                backgroundColor: '#5F7386', color: 'white', border: 'none', 
+                padding: '10px 20px', borderRadius: '6px', fontWeight: 'bold', 
+                cursor: 'pointer' 
+              }}
+            >
+              {isBubbleVisible ? 'Hide' : 'Show'} Chat Bubble
+            </button>
+          </div>
         </div>
       </main>
 
       {/* --- AVAYA CHAT WIDGET --- */}
       <AvayaChatWidget 
         config={chatConfig} 
-        showBubble={true} 
+        showBubble={isBubbleVisible} 
         isOpen={isChatOpen} 
         onOpen={() => setIsChatOpen(true)}
         onClose={() => setIsChatOpen(false)}
